@@ -159,6 +159,7 @@ function isValidUrl(val = "") {
   function getWispUrl() {
     const custom = store.get("wisp-url")?.trim();
     if (custom && /^wss?:\/\//i.test(custom)) return custom;
+    if (vendor.wisp) return vendor.wisp;
     const protocol = location.protocol === "https:" ? "wss" : "ws";
     return `${protocol}://${location.host}/wisp/`;
   }

@@ -1,0 +1,19 @@
+[build]
+  command = "pnpm run build:static"
+  publish = "dist"
+
+# index.html sets <base href="/solana/">, so relative asset and page links resolve under /solana/.
+[[redirects]]
+  from = "/solana/*"
+  to = "/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/play.html"
+  to = "/games.html"
+  status = 200
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
