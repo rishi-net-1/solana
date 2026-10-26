@@ -21,6 +21,7 @@ const OBFUSCATE = true;
 const OBFUSCATE_HTML = true;
 
 const SRC_DIR = path.join(process.cwd(), "static");
+const ASSETS_SRC_DIR = path.join(process.cwd(), "assets");
 const DIST_DIR = path.join(process.cwd(), "dist");
 const JS_DIR = path.join(DIST_DIR, "assets", "js");
 const RUNTIME_DIR = path.join(DIST_DIR, ".runtime");
@@ -1160,7 +1161,7 @@ function vendorSpecs() {
       id: "uv.config",
       renameIdentifiers: true,
       renameUltraviolet: true,
-      src: path.join(SRC_DIR, "assets", "ultraviolet", "uv.config.js"),
+      src: path.join(ASSETS_SRC_DIR, "ultraviolet", "uv.config.js"),
       old: "/assets/ultraviolet/uv.config.js",
       ext: ".js",
       // Holds codec arrows UV serializes into another realm, so Terser stays off.
@@ -1188,7 +1189,7 @@ function vendorSpecs() {
     { id: "sj.wasm", src: path.join(scramjetPath, "scramjet.wasm.wasm"), old: "/assets/scramjet/scramjet.wasm.wasm", ext: ".wasm", binary: true },
     {
       id: "sj.config",
-      src: path.join(SRC_DIR, "assets", "scramjet", "scramjet.config.js"),
+      src: path.join(ASSETS_SRC_DIR, "scramjet", "scramjet.config.js"),
       old: "/assets/scramjet/scramjet.config.js",
       ext: ".js",
       minify: false,
@@ -1635,6 +1636,10 @@ async function build() {
 
   console.log("Copying static/ -> dist/...");
   await cp(SRC_DIR, DIST_DIR, { recursive: true });
+  if (await exists(ASSETS_SRC_DIR)) {
+    console.log("Copying assets/ -> dist/assets/...");
+    await cp(ASSETS_SRC_DIR, path.join(DIST_DIR, "assets"), { recursive: true });
+  }
 
   console.log(OBFUSCATE ? chalk.yellow("Obfuscation: ON") : chalk.yellow("Obfuscation: OFF (rename + rewrite only)"));
 
